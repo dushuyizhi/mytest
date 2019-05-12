@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 名称空间，用mapper代理实现，需要对应接口的权限名称 -->
+<mapper namespace="cn.itheima.crm.mapper.BaseDictMapper">
+	<!-- 1.根据数据字典类型编码查询 -->
+	<select id="queryBaseDictByTypeCode" parameterType="string" resultType="BaseDict">
+		SELECT * FROM base_dict WHERE dict_type_code = #{dict_type_code};
+	</select>
+</mapper>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 名称空间，用mapper代理实现，需要对应接口的权限名称 -->
+<mapper namespace="cn.itheima.crm.mapper.CustomerMapper">
+
+	<!-- 公共sql抽取 :WHERE c.cust_name LIKE '%马%'
+					AND c.cust_source = '6'
+					AND c.cust_industry = '2'
+					AND c.cust_level = '22'-->
+	<sql id="select_customer_where">
+		<where>
+			<if test="custName != null and custName != ''">
+				c.cust_name LIKE "%${custName}%" 
+			</if>
+			<if test="custSource != null and custSource != ''">
+				AND c.cust_source = #{custSource}
+			</if>
+			<if test="custIndustry != null and custIndustry != ''">
+				AND c.cust_industry = #{custIndustry}
+			</if>
+			<if test="custLevel != null and custLevel != ''">
+				AND c.cust_level = #{custLevel}
+			</if>
+		</where>
+	</sql>
+	
+	<!--  1.根据查询条件查询客户 -->
+	<select id="queryCustomerList" parameterType="queryVo" resultType="Customer">
+		SELECT c.cust_id,c.cust_name,t1.dict_item_name cust_source,t2.dict_item_name cust_industry,t3.dict_item_name cust_level,c.cust_phone,c.cust_mobile
+		FROM customer c 
+		LEFT JOIN base_dict t1 ON t1.dict_id = c.cust_source
+		LEFT JOIN base_dict t2 ON t2.dict_id = c.cust_industry
+		LEFT JOIN base_dict t3 ON t3.dict_id = c.cust_level
+		<include refid="select_customer_where"></include>
+		LIMIT #{start},#{rows}
+	</select>
+	
+	<!-- 2.符合条件的客户的数量 -->
+	<select id="countUsers" parameterType="queryVo" resultType="int">
+		SELECT COUNT(1) 
+		FROM customer c
+		<include refid="select_customer_where"></include>
+	</select>
+	
+	<!-- 3.根据id查询客户 -->
+	<select id="queryUserById" parameterType="long" resultType="customer">
+		SELECT * FROM customer WHERE cust_id = #{custId};
+	</select>
+	
+	<!-- 4.修改客户 -->
+	<update id="updateUser" parameterType="customer">
+		UPDATE customer  
+		<set>
+			<if test="cust_name != null and cust_name != ''">
+				cust_name = #{cust_name},
+			</if>
+			<if test="cust_source != null and cust_source != ''">
+				cust_source = #{cust_source},
+			</if>
+			<if test="cust_industry != null and cust_industry != ''">
+				cust_industry = #{cust_industry},
+			</if>
+			<if test="cust_level != null and cust_level != ''">
+				cust_level = #{cust_level},
+			</if>
+			<if test="cust_linkman != null and cust_linkman != ''">
+				cust_linkman = #{cust_linkman},
+			</if>
+			<if test="cust_phone != null and cust_phone != ''">
+				cust_phone = #{cust_phone},
+			</if>
+			<if test="cust_mobile != null and cust_mobile != ''">
+				cust_mobile = #{cust_mobile},
+			</if>
+			<if test="cust_zipcode != null and cust_zipcode != ''">
+				cust_zipcode = #{cust_zipcode},
+			</if>
+			<if test="cust_address != null and cust_address != ''">
+				cust_address = #{cust_address},
+			</if>
+		</set>
+		<where>
+			cust_id = #{cust_id}
+		</where>
+	</update>
+	
+	<!-- 5.删除客户 -->
+	<delete id="delCust" parameterType="long">
+		delete from customer where cust_id = #{cust_id}
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

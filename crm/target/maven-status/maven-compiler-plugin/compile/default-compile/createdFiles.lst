@@ -1,0 +1,7 @@
+cn\itheima\crm\mapper\BaseDictMapper.class
+cn\itheima\crm\po\BaseDict.class
+cn\itheima\crm\service\impl\BaseDictServiceImpl.class
+cn\itheima\crm\controller\CustomerController.class
+cn\itheima\crm\utils\Page.class
+cn\itheima\crm\utils\NavigationTag.class
+cn\itheima\crm\service\BaseDictService.class
